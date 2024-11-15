@@ -1,0 +1,17 @@
+{
+  "name": "anubis-preclinical",
+  "version": "1.0.0",
+  "description": "Anubis Pre-Clinical Research Website",
+  "main": "index.js",
+  "scripts": {
+    "deploy": "node deploy.js",
+    "start": "npx http-server . -p 3000"
+  },
+  "dependencies": {
+    "googleapis": "^128.0.0",
+    "dotenv": "^16.3.1"
+  },
+  "devDependencies": {
+    "http-server": "^14.1.1"
+  }
+}
