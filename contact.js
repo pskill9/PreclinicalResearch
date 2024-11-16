@@ -5,12 +5,17 @@ document.addEventListener('DOMContentLoaded', function() {
     const submitButton = form.querySelector('button[type="submit"]');
     
     // Replace this URL with your Google Apps Script Web App URL after deployment
-    const SCRIPT_URL = 'YOUR_GOOGLE_APPS_SCRIPT_URL';
+    const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxYOg7kpmfBMculF9Dkzc6MHCaT4oBx5fQd5DyjvX0bYY6kBgSz7osuW6evnxDXR3rn/exec';
 
-    function showMessage(element, duration = 5000) {
+    function showMessage(element, message = null, duration = 5000) {
         // Hide any existing messages
         successMessage.style.display = 'none';
         errorMessage.style.display = 'none';
+        
+        // Update message text if provided
+        if (message) {
+            element.textContent = message;
+        }
         
         // Show the new message
         element.style.display = 'block';
@@ -21,6 +26,10 @@ document.addEventListener('DOMContentLoaded', function() {
 
     function resetForm() {
         form.reset();
+        // Remove any error styling
+        form.querySelectorAll('.error').forEach(field => {
+            field.classList.remove('error');
+        });
     }
 
     function setLoadingState(isLoading) {
@@ -59,7 +68,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
         if (!isValid && firstInvalidField) {
             firstInvalidField.focus();
-            showMessage(errorMessage);
+            showMessage(errorMessage, 'Please fill in all required fields correctly.');
         }
 
         return isValid;
@@ -89,19 +98,21 @@ document.addEventListener('DOMContentLoaded', function() {
         // Send data to Google Apps Script
         fetch(SCRIPT_URL, {
             method: 'POST',
-            mode: 'no-cors',
+            mode: 'no-cors', // Required for Google Apps Script
             headers: {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify(formData)
         })
         .then(response => {
-            showMessage(successMessage);
+            // Since mode is 'no-cors', we can't access the response
+            // We'll show a generic success message
+            showMessage(successMessage, 'Your message has been sent successfully! We\'ll get back to you soon.');
             resetForm();
         })
         .catch(error => {
             console.error('Error:', error);
-            showMessage(errorMessage);
+            showMessage(errorMessage, 'There was an error sending your message. Please try again.');
         })
         .finally(() => {
             setLoadingState(false);
@@ -115,6 +126,13 @@ document.addEventListener('DOMContentLoaded', function() {
                 this.classList.remove('error');
             }
         });
+    });
+
+    // Prevent accidental form submission when pressing Enter
+    form.addEventListener('keypress', function(e) {
+        if (e.key === 'Enter' && e.target.tagName !== 'TEXTAREA') {
+            e.preventDefault();
+        }
     });
 });
 
@@ -131,6 +149,26 @@ const styles = `
 
     .fa-spinner {
         margin-right: 8px;
+    }
+
+    .success-message,
+    .error-message {
+        display: none;
+        padding: 15px;
+        margin-bottom: 20px;
+        border-radius: 4px;
+    }
+
+    .success-message {
+        background-color: #d4edda;
+        color: #155724;
+        border: 1px solid #c3e6cb;
+    }
+
+    .error-message {
+        background-color: #f8d7da;
+        color: #721c24;
+        border: 1px solid #f5c6cb;
     }
 `;
 
