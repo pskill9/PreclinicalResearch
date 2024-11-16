@@ -38,6 +38,12 @@ nav {
     font-weight: bold;
     color: var(--primary-color);
     letter-spacing: 2px;
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.logo:hover {
+    color: var(--secondary-color);
 }
 
 .nav-links a {
