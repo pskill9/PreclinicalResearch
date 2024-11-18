@@ -115,4 +115,8 @@ The website is compatible with:
 
 ## License
 
-This project is licensed under the MIT License - see the LICENSE file for details.
+This project is proprietary and confidential. All rights reserved.
+
+Copyright (c) 2024 Anubis Pre-Clinical Research
+
+Unauthorized copying, distribution, modification, public display, or public performance of this software or any of its contents is strictly prohibited. For permission requests, please contact team@anubisconsulting.org.
